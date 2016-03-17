@@ -11,8 +11,8 @@
  *         在js里$(选择器).jqSelect();初始化控件
  *
  *
- *         @author AfterWin
- *         @mail CJ_Zheng1023@hotmail.com
+ *         @author zhengchj
+ *         @mail zhengchj@neusoft.com
  *
  *         update log     v1.0.0     2016.3.17      完成基本功能
  *
@@ -23,7 +23,7 @@
  *
  *					      v1.2.1     2016.3.17      修改IE7下点击空白页面后下拉框不收回的问题
  *
- *
+ *                        v1.2.2     2016.3.17      修改样式，解决在IE7下自动换行的问题
  */
 
 
@@ -50,8 +50,8 @@
             var list=$("<ul></ul>");
             /**
              * 基于原始dom树构建下拉菜单项
-             * @author AfterWin
-             * @mail CJ_Zheng1023@hotmail.com
+             * @author zhengchj
+             * @mail zhengchj@neusoft.com
              */
             target.children().each(function(){
                 var me=$(this);
@@ -76,8 +76,8 @@
             list.data("can-click",true);
             /**
              * 绑定事件
-             * @author AfterWin
-             * @mail CJ_Zheng1023@hotmail.com
+             * @author zhengchj
+             * @mail zhengchj@neusoft.com
              */
             menu.bind({
                 click:function(e){
