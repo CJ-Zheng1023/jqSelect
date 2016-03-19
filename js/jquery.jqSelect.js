@@ -1,13 +1,13 @@
 /**
  * 使用方法：
  *
- *        在页面<div data-width="100" data-height="30" id="test" data-border="true">
+ *        在页面<div data-width="100" data-height="30" id="test" data-border="true" data-zindex="1">
  *                  <div value="123">123</div>
  *                  <div value="456">456</div>
  *                  <div value="789" checked="checked">789</div>
  *              </div>
  *         data-width为下拉框宽度（必填），data-height为下拉框高度（必填），checked为默认选中,data-border是否需要边框 默认为false
- *
+ *         data-zindex为图层层级（主要解决I7下控件互相遮住的问题）
  *         在js里$(选择器).jqSelect();初始化控件
  *
  *
@@ -26,6 +26,9 @@
  *                        v1.2.2     2016.3.17      修改样式，解决在IE7下自动换行的问题
  *
  *                        v1.2.3     2016.3.18      修改子节点字体大小，修改图层问题
+ *
+ *					      v1.3.0     2016.3.19      增加data-zindex参数配置以及相关逻辑
+ *
  */
 
 
@@ -46,6 +49,9 @@
             });
             target.attr("value",selectItem.attr("value"));
             var menu=$("<a></a>").append(menuField).addClass("jq-select-menu").append("<i></i>");
+            if($.browser.msie&&$.browser.version<=7){
+                menu.css("z-index",target.attr("data-zindex"));
+            }
             if(target.attr("data-border")=="true"){
                 menu.addClass("border");
             }
