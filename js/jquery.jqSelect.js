@@ -11,8 +11,8 @@
  *         在js里$(选择器).jqSelect();初始化控件
  *
  *
- *         @author zhengchj
- *         @mail zhengchj@neusoft.com
+ *         @author AfterWin
+ *         @mail CJ_Zheng1023@hotmail.com
  *
  *         update log     v1.0.0     2016.3.17      完成基本功能
  *
@@ -58,8 +58,8 @@
             var list=$("<ul></ul>");
             /**
              * 基于原始dom树构建下拉菜单项
-             * @author zhengchj
-             * @mail zhengchj@neusoft.com
+             * @author AfterWin
+             * @mail CJ_Zheng1023@hotmail.com
              */
             target.children().each(function(){
                 var me=$(this);
@@ -84,8 +84,8 @@
             list.data("can-click",true);
             /**
              * 绑定事件
-             * @author zhengchj
-             * @mail zhengchj@neusoft.com
+             * @author AfterWin
+             * @mail CJ_Zheng1023@hotmail.com
              */
             menu.bind({
                 click:function(e){
