@@ -1,13 +1,13 @@
 /**
  * 使用方法：
  *
- *        在页面<div data-width="100" data-height="30" id="test" data-border="true" data-zindex="1">
+ *        在页面<div data-width="100" data-height="30" id="test" data-border="true" data-zindex="1" data-handler="handler">
  *                  <div value="123">123</div>
  *                  <div value="456">456</div>
  *                  <div value="789" checked="checked">789</div>
  *              </div>
  *         data-width为下拉框宽度（必填），data-height为下拉框高度（必填），checked为默认选中,data-border是否需要边框 默认为false
- *         data-zindex为图层层级（主要解决I7下控件互相遮住的问题）
+ *		   data-zindex为图层层级	（主要解决I7下控件互相遮住的问题）
  *         在js里$(选择器).jqSelect();初始化控件
  *
  *
@@ -29,13 +29,40 @@
  *
  *					      v1.3.0     2016.3.19      增加data-zindex参数配置以及相关逻辑
  *
- *					      v1.3.1     2016.4.8       修改箭头图标
+ * 						  v1.3.1     2016.4.8       修改箭头图标
+ *
+ * 						  v1.4.0     2016.4.18      1.新增data-handler参数（点击下拉选项的时候触发）
+ * 													2.屏蔽样式冲突风险
+ *
+ *
+ * 						  v1.5.0     2016.4.20      新增setSelectValue API，可以动态设置select组件值
+ *
+ * 											        example:$(选择器).setSelectValue(赋值内容);
  *
  */
 
 
 
 (function($){
+
+    /**
+     * 设置select组件值
+     * @param {Object} value   赋值内容
+     * @author AfterWin
+     * @author CJ_Zheng1023@hotmail.com
+     */
+    $.fn.setSelectValue=function(value){
+        var me=$(this);
+        if(!me.hasClass("jq-select-container"))
+            return;
+        var item=me.find("a>ul>li>a[value='"+value+"']");
+        if(!item.length>0)
+            return;
+        item.parent().siblings().find("a").removeClass("active");
+        item.addClass("active");
+        me.attr("value",value);
+        me.find("a>span").html(value);
+    }
 
 
     /**
@@ -44,16 +71,17 @@
     $.fn.jqSelect=function(){
         $(this).each(function(){
             var target=$(this);
+            target.hide();
             target.addClass("jq-select-container");
             var selectItem=target.find("[checked='checked']").length!=0?target.find("[checked='checked']"):target.children().eq(0);
             var menuField=$("<span>"+selectItem.html()+"</span>").css({
                 "line-height":target.attr("data-height")+"px"
             });
             target.attr("value",selectItem.attr("value"));
-            var menu=$("<a></a>").append(menuField).addClass("jq-select-menu").append("<i></i>");
-            if($.browser.msie&&$.browser.version<=7){
-                menu.css("z-index",target.attr("data-zindex"));
-            }
+            var menu=$("<a></a>").append(menuField).addClass("jq-select-menu").append("<i class='arrow'></i>");
+            //if($.browser.msie&&$.browser.version<=8){
+            menu.css("z-index",target.attr("data-zindex"));
+            //}
             if(target.attr("data-border")=="true"){
                 menu.addClass("border");
             }
@@ -72,6 +100,9 @@
                     itemContent.addClass("active");
                     menuField.html(itemContent.html());
                     target.attr("value",itemContent.attr("value"));
+                    if(target.attr("data-handler")){
+                        eval(target.attr("data-handler")+"()");
+                    }
                 })
                 item.append(itemContent);
                 list.append(item);
@@ -82,7 +113,8 @@
             target.empty();
             menu.append(list);
             target.append(menu);
-            list.data("data-list-height",list.height());
+            target.show();
+            list.data("extend",false);
             list.data("can-click",true);
             /**
              * 绑定事件
@@ -95,20 +127,16 @@
                         return;
                     }
                     menu.addClass("active");
-                    if(list.css("display")=="none"){
+                    if(!list.data("extend")){
                         list.data("can-click",false);
-                        list.height(0).css("display","block");
-                        list.animate({
-                            height:list.data("data-list-height")
-                        },function(){
+                        list.slideDown(function(){
+                            list.data("extend",true);
                             list.data("can-click",true);
-                        })
+                        });
                     }else{
                         list.data("can-click",false);
-                        list.animate({
-                            height:0
-                        },function(){
-                            list.css("display","none");
+                        list.slideUp(function(){
+                            list.data("extend",false);
                             list.data("can-click",true);
                         })
                     }
@@ -121,12 +149,10 @@
                         return;
                     }
                     menu.removeClass("active");
-                    if(list.css("display")=="block"){
+                    if(list.data("extend")){
                         list.data("can-click",false);
-                        list.animate({
-                            height:0
-                        },function(){
-                            list.css("display","none");
+                        list.slideUp(function(){
+                            list.data("extend",false);
                             list.data("can-click",true);
                         })
                     }

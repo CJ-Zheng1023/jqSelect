@@ -29,7 +29,7 @@
 .jq-select-menu.active{
     box-shadow: rgb(64, 181, 226) 0px 0px 5px 0px;
 }
-.jq-select-menu i{
+.jq-select-menu i.arrow{
     width: 10px;
     height: 10px;
     position: absolute;
@@ -56,9 +56,10 @@
 }
 .jq-select-menu ul li{
     margin: 0;
-    padding: 0;
+    padding: 0 !important;
     font-size: inherit;
     z-index: 20;
+    vertical-align:bottom;
 
 }
 .jq-select-menu ul li a{
@@ -69,6 +70,7 @@
     background-color: #fff;
     white-space: nowrap;
     font-size: inherit;
+    vertical-align:bottom;
 }
 .jq-select-menu ul li a.active{
     background-color: rgb(0,132,199);
