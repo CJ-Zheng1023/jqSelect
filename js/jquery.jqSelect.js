@@ -39,6 +39,8 @@
  *
  * 											        example:$(选择器).setSelectValue(赋值内容);
  *
+ * 					      v1.5.1     2016.4.27  新增隐藏域
+ *
  */
 
 
@@ -72,13 +74,17 @@
         $(this).each(function(){
             var target=$(this);
             target.hide();
-            target.addClass("jq-select-container");
             var selectItem=target.find("[checked='checked']").length!=0?target.find("[checked='checked']"):target.children().eq(0);
             var menuField=$("<span>"+selectItem.html()+"</span>").css({
                 "line-height":target.attr("data-height")+"px"
             });
             target.attr("value",selectItem.attr("value"));
             var menu=$("<a></a>").append(menuField).addClass("jq-select-menu").append("<i class='arrow'></i>");
+            var hiddenInput;
+            if(target.attr("name")){
+                hiddenInput=$("<input type='hidden'>").attr("name",target.attr("name")).val(selectItem.attr("value"));
+                target.removeAttr("name");
+            }
             //if($.browser.msie&&$.browser.version<=8){
             menu.css("z-index",target.attr("data-zindex"));
             //}
@@ -100,6 +106,9 @@
                     itemContent.addClass("active");
                     menuField.html(itemContent.html());
                     target.attr("value",itemContent.attr("value"));
+                    if(hiddenInput){
+                        hiddenInput.val(itemContent.attr("value"));
+                    }
                     if(target.attr("data-handler")){
                         eval(target.attr("data-handler")+"()");
                     }
@@ -113,7 +122,10 @@
             target.empty();
             menu.append(list);
             target.append(menu);
-            target.show();
+            if(hiddenInput){
+                target.append(hiddenInput);
+            }
+            target.addClass("jq-select-container");
             list.data("extend",false);
             list.data("can-click",true);
             /**

@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="css/jquery.jqSelect.css"/>
 </head>
 <body>
-
-<div data-width="100" data-height="30" id="test" data-border="true" data-zindex="2">
+<div name="test_name" data-width="100" data-height="30" id="test" data-border="true" data-zindex="2">
     <div value="123">123</div>
     <div value="456">456</div>
     <div value="789" checked="checked">789dsdfafasddasfadsfasdf</div>
@@ -35,12 +34,10 @@
 <script src="js/jquery.jqSelect.js"></script>
 <script>
     $(function(){
-        $(function(){
-            $("#test").jqSelect();
-            $("#test1").jqSelect();
-            $("#test2").jqSelect();
-            $("#test2").setSelectValue("456");
-        })
+        $("#test").jqSelect();
+        $("#test1").jqSelect();
+        $("#test2").jqSelect();
+        $("#test2").setSelectValue("456");
     })
 </script>
 </body>

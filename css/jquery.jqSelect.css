@@ -1,6 +1,8 @@
 .jq-select-container{
-
-
+    display:inline-block !important;
+    *display:inline !important;
+    *zoom:1 !important;
+    line-height:normal !important;
 }
 .jq-select-menu{
     cursor: pointer;
